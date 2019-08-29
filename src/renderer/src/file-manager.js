@@ -82,11 +82,26 @@ class FileManager extends EventEmitter {
 
 		return new Promise(async (res, rej) => {
 			let ws = fs.createWriteStream(this.filePath);
-			await csvStringify(this.buffer, (err, data) => {
-				if (err) throw err;
-				ws.write(data);
-			})
-			ws.close()
+			
+			this.buffer.forEach(row => {
+				let cells = [];
+
+				row.forEach(cell => {
+					cell.push(`"${cell}"`)
+				})
+
+				let s = cells.join(',') + '\n';
+				ws.write(s);
+			});
+
+			ws.close();
+
+			// await csvStringify(this.buffer, (err, data) => {
+			// 	if (err) throw err;
+			// 	ws.write(data);
+			// })
+			// ws.close()
+
 			// let rs = new stream.Readable({ objectMode: true });
 
 			// rs.pipe(csvStringigy()).pipe(ws);
