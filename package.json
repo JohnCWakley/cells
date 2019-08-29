@@ -1,0 +1,33 @@
+{
+	"name": "dev-cells",
+	"version": "0.1.0",
+	"description": "A developer's CSV editor",
+	"main": "src/main.js",
+	"scripts": {
+		"test": "cross-env NODE_ENV=development electron .",
+		"start": "electron ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@bitbucket.org/jwakley74/dev-cells.git"
+	},
+	"keywords": [
+		"csv",
+		"editor"
+	],
+	"author": "John Wakley <jwakley74@gmail.com>",
+	"license": "MIT",
+	"homepage": "https://bitbucket.org/jwakley74/dev-cells#readme",
+	"devDependencies": {
+		"cross-env": "^5.2.0",
+		"electron": "^6.0.5",
+		"electron-build": "0.0.3",
+		"electron-reload": "^1.5.0"
+	},
+	"dependencies": {
+		"csv-parse": "^4.4.5",
+		"csv-stringify": "^5.3.3",
+		"handsontable": "^7.1.1",
+		"hogger": "^1.2.1"
+	}
+}
