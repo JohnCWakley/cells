@@ -1,8 +1,7 @@
 'use strict';
 
-const log = require('hogger')('window');
 const { name, version } = require('../package.json');
-const { app, BrowserWindow, Menu, dialog } = require('electron');
+const { BrowserWindow, Menu, dialog } = require('electron');
 
 const DEFAULT_PROPERTIES = {
 	width: 1280,

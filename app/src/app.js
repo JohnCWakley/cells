@@ -9,11 +9,11 @@ class App {
 	constructor() {
 		this.buffers = [];
 
-		ipcRenderer.on('onFileMenuNewClicked', this.createNewFile.bind(this));
-		ipcRenderer.on('onFileMenuOpenClicked', this.openFile.bind(this));
-		ipcRenderer.on('onFileMenuSaveClicked', this.saveFile.bind(this));
-		ipcRenderer.on('onFileMenuSaveAsClicked', this.saveFileAs.bind(this));
-		ipcRenderer.on('onFileMenuCloseClicked', this.closeFile.bind(this));
+		ipcRenderer.on('on_file_new_clicked', this.createNewFile.bind(this));
+		ipcRenderer.on('on_file_open_clicked', this.openFile.bind(this));
+		ipcRenderer.on('on_file_save_clicked', this.saveFile.bind(this));
+		ipcRenderer.on('on_file_save_as_clicked', this.saveFileAs.bind(this));
+		ipcRenderer.on('on_file_close_clicked', this.closeFile.bind(this));
 	}
 
 	createNewFile(evt) {
