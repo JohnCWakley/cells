@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 function createWindow() {
-	let win = new Window({ file: 'src/renderer/index.html' });
+	let win = new Window({ file: 'app/index.html' });
 	win.on('close', () => { win = null; });
 }
 
