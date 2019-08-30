@@ -1,13 +1,13 @@
 const log = require('hogger')('app');
 const { ipcRenderer } = require('electron');
-const FileManager = require('./file-manager.js');
+const Buffer = require('./buffer.js');
 const Handsontable = require('handsontable');
 const { remote } = require('electron');
 const path = require('path');
 
 class App {
 	constructor() {
-		this.fileManagers = [];
+		this.buffers = [];
 
 		ipcRenderer.on('onFileMenuNewClicked', this.createNewFile.bind(this));
 		ipcRenderer.on('onFileMenuOpenClicked', this.openFile.bind(this));
@@ -17,16 +17,16 @@ class App {
 	}
 
 	createNewFile(evt) {
-		let fm = new FileManager();
+		let buffer = new Buffer();
 
-		fm.on('fileManagerLoaded', () => {
-			this.focusedFileManager = fm;
+		buffer.on('buffer_loaded', () => {
+			this.focusedFileManager = buffer;
 			this.updateWindow();
 		});
 
-		this.focusedFileManager = fm;
-		this.fileManagers.push(fm);
-		
+		this.focusedFileManager = buffer;
+		this.buffers.push(buffer);
+
 		this.updateWindow();
 	}
 
@@ -49,14 +49,14 @@ class App {
 					}
 
 					if (filePath !== null) {
-						let fm = new FileManager(filePath);
+						let buffer = new Buffer(filePath);
 
-						fm.on('fileManagerLoaded', () => {
-							this.focusedFileManager = fm;
+						buffer.on('buffer_loaded', () => {
+							this.focusedFileManager = buffer;
 							this.updateWindow();
 						});
 
-						this.fileManagers.push(fm);
+						this.buffers.push(buffer);
 					}
 				}
 			})
@@ -64,9 +64,9 @@ class App {
 	}
 
 	saveFile(evt) {
-		if (this.fileManagers.length > 0) {
+		if (this.buffers.length > 0) {
 			if (!this.focusedFileManager) {
-				this.focusedFileManager = this.fileManagers[0];
+				this.focusedFileManager = this.buffers[0];
 			}
 
 			this.focusedFileManager.saveFile();
@@ -74,9 +74,9 @@ class App {
 	}
 
 	saveFileAs(evt) {
-		if (this.fileManagers.length > 0) {
+		if (this.buffers.length > 0) {
 			if (!this.focusedFileManager) {
-				this.focusedFileManager = this.fileManagers[0];
+				this.focusedFileManager = this.buffers[0];
 			}
 
 			remote.dialog.showSaveDialog(remote.getCurrentWindow(), {
@@ -106,26 +106,26 @@ class App {
 			if (ele) {
 				ele.parentElement.removeChild(ele);
 				this.focusedFileManager.destroy();
-				this.fileManagers.shift();
+				this.buffers.shift();
 
-				if (this.fileManagers.length > 0) {
-					this.focusedFileManager = this.fileManagers[0];
+				if (this.buffers.length > 0) {
+					this.focusedFileManager = this.buffers[0];
 				}
 			}
 		}
 	}
 
 	updateWindow() {
-		this.fileManagers.forEach(fileManager => {
-			let container = document.querySelector(fileManager.name);
+		this.buffers.forEach(buffer => {
+			let container = document.querySelector(buffer.name);
 
 			if (!container) {
 				container = document.createElement('div');
-				container.id = fileManager.name;
+				container.id = buffer.name;
 				document.body.appendChild(container);
 
 				let table = new Handsontable.default(container, {
-					data: fileManager.buffer,
+					data: buffer.data,
 					rowHeaders: true,
 					colHeaders: true,
 					filters: true,

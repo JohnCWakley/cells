@@ -13,12 +13,12 @@ const stream = require('stream');
 const DEFAULT_COLUMN_COUNT = 26;
 const DEFAULT_ROW_COUNT = 128;
 
-class FileManager extends EventEmitter {
+class Buffer extends EventEmitter {
 	constructor(filePath) {
 		super();
 
 		this.window = remote.getCurrentWindow();
-		this.buffer = [];
+		this.data = [];
 
 		for (var r = 0; r < DEFAULT_ROW_COUNT; r++) {
 			let row = [];
@@ -27,23 +27,23 @@ class FileManager extends EventEmitter {
 				row.push(null);
 			}
 
-			this.buffer.push(row);
+			this.data.push(row);
 		}
 
 		this.hasChanged = false;
 
 		if (filePath) {
 			this.readFile(filePath)
-				.then(buffer => {
-					this.buffer = buffer;
-					this.emit('fileManagerLoaded');
+				.then(data => {
+					this.data = data;
+					this.emit('buffer_loaded');
 				})
 				.catch(err => log.error(err));
 		} else {
 			this.filePath = path.join(os.homedir(), 'untitled.csv');
 			this.extension = path.extname(this.filePath);
 			this.name = path.basename(this.filePath, this.extension);
-			this.emit('fileManagerLoaded');
+			this.emit('buffer_loaded');
 		}
 	}
 
@@ -52,20 +52,20 @@ class FileManager extends EventEmitter {
 		this.extension = path.extname(this.filePath);
 		this.name = path.basename(this.filePath, this.extension);
 
-		log.debug('FileManager: readFile:', this.filePath);
+		log.debug('Buffer: readFile:', this.filePath);
 
 		return new Promise((res, rej) => {
-			var buffer = [];
+			var data = [];
 
 			if (fs.existsSync(this.filePath)) {
 				fs.createReadStream(this.filePath)
 					.pipe(csvParse())
-					.on('data', row => { buffer.push(row) })
-					.on('end', () => res(buffer))
+					.on('data', row => { data.push(row) })
+					.on('end', () => res(data))
 					.on('error', err => rej(err));
 			} else {
 				log.warn('readFile: "', this.filePath, '" does not exist.');
-				res(buffer);
+				res(data);
 			}
 		})
 	}
@@ -78,12 +78,12 @@ class FileManager extends EventEmitter {
 			this.name = path.basename(this.filePath, this.extension);
 		}
 
-		log.debug('FileManager: saveFile:', this.filePath);
+		log.debug('Buffer: saveFile:', this.filePath);
 
 		return new Promise(async (res, rej) => {
 			let ws = fs.createWriteStream(this.filePath);
 			
-			this.buffer.forEach(row => {
+			this.data.forEach(row => {
 				let cells = [];
 
 				row.forEach(cell => {
@@ -96,7 +96,7 @@ class FileManager extends EventEmitter {
 
 			ws.close();
 
-			// await csvStringify(this.buffer, (err, data) => {
+			// await csvStringify(this.data, (err, data) => {
 			// 	if (err) throw err;
 			// 	ws.write(data);
 			// })
@@ -106,7 +106,7 @@ class FileManager extends EventEmitter {
 
 			// rs.pipe(csvStringigy()).pipe(ws);
 			
-			// this.buffer.forEach(row => rs.push(row));
+			// this.data.forEach(row => rs.push(row));
 			// rs.push(null);
 			// ws.close();
 
@@ -115,8 +115,8 @@ class FileManager extends EventEmitter {
 	}
 
 	destroy() {
-		this.buffer = null;
+		this.data = null;
 	}
 }
 
-module.exports = FileManager;
+module.exports = Buffer;
