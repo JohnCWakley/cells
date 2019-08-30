@@ -1,2 +1,2 @@
-# dev-cells
+# cells
 A CSV editor for developers :)

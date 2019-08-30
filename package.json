@@ -1,5 +1,5 @@
 {
-	"name": "dev-cells",
+	"name": "cells",
 	"version": "0.1.0",
 	"description": "A developer's CSV editor",
 	"main": "electron/main.js",
@@ -9,7 +9,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@bitbucket.org/jwakley74/dev-cells.git"
+		"url": "https://github.com/JohnCWakley/cells.git"
 	},
 	"keywords": [
 		"csv",
@@ -17,7 +17,7 @@
 	],
 	"author": "John Wakley <jwakley74@gmail.com>",
 	"license": "MIT",
-	"homepage": "https://bitbucket.org/jwakley74/dev-cells#readme",
+	"homepage": "https://github.com/JohnCWakley/cells",
 	"devDependencies": {
 		"cross-env": "^5.2.0",
 		"electron": "^6.0.5",
