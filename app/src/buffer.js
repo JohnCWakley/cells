@@ -87,7 +87,7 @@ class Buffer extends EventEmitter {
 				let cells = [];
 
 				row.forEach(cell => {
-					cell.push(`"${cell}"`)
+					cells.push(`"${cell}"`)
 				})
 
 				let s = cells.join(',') + '\n';
