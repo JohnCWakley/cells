@@ -1,6 +1,5 @@
 'use strict';
 
-const log = require('hogger')('menu');
 const { name, version, author, license, description, homepage } = require('../package.json');
 const { app, Menu, dialog } = require('electron');
 

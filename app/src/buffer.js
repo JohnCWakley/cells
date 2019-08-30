@@ -82,33 +82,15 @@ class Buffer extends EventEmitter {
 
 		return new Promise(async (res, rej) => {
 			let ws = fs.createWriteStream(this.filePath);
+			let rs = new stream.Readable({ objectMode: true });
 			
-			this.data.forEach(row => {
-				let cells = [];
+			rs.on('end', () => ws.close());
 
-				row.forEach(cell => {
-					cells.push(`"${cell}"`)
-				})
+			rs.pipe(csvStringify()).pipe(ws);
 
-				let s = cells.join(',') + '\n';
-				ws.write(s);
-			});
+			this.data.forEach(row => rs.push(row))
 
-			ws.close();
-
-			// await csvStringify(this.data, (err, data) => {
-			// 	if (err) throw err;
-			// 	ws.write(data);
-			// })
-			// ws.close()
-
-			// let rs = new stream.Readable({ objectMode: true });
-
-			// rs.pipe(csvStringigy()).pipe(ws);
-			
-			// this.data.forEach(row => rs.push(row));
-			// rs.push(null);
-			// ws.close();
+			rs.push(null);
 
 			res();
 		})
