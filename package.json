@@ -11,7 +11,8 @@
 	},
 	"scripts": {
 		"test": "cross-env NODE_ENV=development electron .",
-		"build": "rm -rf dist && npm run dist",
+		"build": "npm run clean && npm run dist",
+		"clean": "rm -rf dist",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder",
 		"postinstall": "electron-builder install-app-deps"
