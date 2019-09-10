@@ -3,9 +3,18 @@
 	"version": "0.1.0",
 	"description": "A developer's CSV editor",
 	"main": "electron/main.js",
+	"build": {
+		"appId": "us.johnwakley.cells",
+		"productName": "Cells",
+		"copyright": "Copyright © 2019, John Wakley",
+		"icon": "./cells_icon.jpg"
+	},
 	"scripts": {
 		"test": "cross-env NODE_ENV=development electron .",
-		"start": "electron ."
+		"build": "rm -rf dist && npm run dist",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder",
+		"postinstall": "electron-builder install-app-deps"
 	},
 	"repository": {
 		"type": "git",
@@ -15,13 +24,17 @@
 		"csv",
 		"editor"
 	],
-	"author": "John Wakley <jwakley74@gmail.com>",
+	"author": {
+		"name": "John Wakley",
+		"email": "jwakley74@gmail.com"
+	},
 	"license": "MIT",
 	"homepage": "https://github.com/JohnCWakley/cells",
 	"devDependencies": {
 		"cross-env": "^5.2.0",
 		"electron": "^6.0.5",
 		"electron-build": "0.0.3",
+		"electron-builder": "^21.2.0",
 		"electron-reload": "^1.5.0"
 	},
 	"dependencies": {

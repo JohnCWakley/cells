@@ -21,7 +21,7 @@ module.exports = function (window) {
 					click: () => dialog.showMessageBox(null, {
 							title: `About ${name}`,
 							message: `${name} v${version} (${license})`,
-							detail: `${author}\n${description}\n${homepage}`
+							detail: `${author.name} <${author.email}>\n${description}\n${homepage}`
 						})
 				},
 				{ type: 'separator' },
