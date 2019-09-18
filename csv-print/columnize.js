@@ -1,4 +1,7 @@
-module.exports = function (rows, params) {
+const fs = require('fs');
+const readline = require('readline');
+
+function columnize(rows, params) {
     params = params || {};
 
     let delimiter = params.delimiter || ',';
@@ -84,3 +87,19 @@ function createRow(data, widths, paddingAmount, paddingCharacter, justification,
 
     return `${borderVertical}${paddingCharacter.repeat(paddingAmount)}${row.join(paddingCharacter.repeat(paddingAmount) + borderVertical + paddingCharacter.repeat(paddingAmount))}${paddingCharacter.repeat(paddingAmount)}${borderVertical}`
 }
+
+function readRowsFromFile(filename) {
+    return new Promise((res, rej) => {
+        let rows = [];
+        let rl = readline.createInterface({ input: fs.createReadStream(filename) });
+        rl.on('line', line => rows.push(line));
+        rl.on('close', () => res(rows));
+    });
+}
+
+if (process.argv.length > 2) {
+    readRowsFromFile(process.argv[2]).then(rows => {
+        console.log(columnize(rows));
+    });
+}
+
