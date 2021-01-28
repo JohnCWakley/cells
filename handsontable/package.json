@@ -33,7 +33,7 @@
 	"homepage": "https://github.com/JohnCWakley/cells",
 	"devDependencies": {
 		"cross-env": "^5.2.0",
-		"electron": "^6.0.5",
+		"electron": "^9.4.0",
 		"electron-build": "0.0.3",
 		"electron-builder": "^21.2.0",
 		"electron-reload": "^1.5.0"
